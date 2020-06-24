@@ -29,6 +29,25 @@ ALLOWED_HOSTS = []
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+AWS_ACCESS_KEY_ID = 'AKIA2D6ALXOWFHETWQN2'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'mavenai'
+AWS_S3_REGION_NAME = 'us-east'
+AWS_S3_ENDPOINT_URL = 'https://s3.amazonaws.com'
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+
+DEFAULT_FILE_STORAGE = 'users.amazonupload.MediaStorage'
+
+
+S3DIRECT_DESTINATIONS = {
+    'primary_destination': {
+        'key': 'register/',
+        'allowed': ['image/jpg', 'image/jpeg', 'image/png', 'video/mp4'],
+    },
+}
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,7 +58,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'django.contrib.sites',
+    'storages',
     'crispy_forms',
 ]
 
@@ -126,3 +150,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTHENTICATION_BACKENDS = {
+    'django.contrib.auth.backends.ModelBackend',
+    # 'django.account.auth.backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+}
+
+SITE_ID = 1
