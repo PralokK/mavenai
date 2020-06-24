@@ -1,0 +1,35 @@
+{% load crispy_forms_tags %}
+{% block content %}
+     <div>
+         <h3>Hello {{loginUser}}!!!</h3>
+     </div>
+     <form method="POST">
+        <fieldset class="form-group">
+                {% csrf_token %}
+            <legend class="border-bottom mb-4">Change Password Now</legend>
+            {{ form|crispy }}
+            <div >
+                    <label for="id_password" class="control-label  requiredField">
+                        Password<span class="asteriskField">*</span> </label> 
+                        <div class="controls "> <input type="text" name="oldpassword" class="form-control" required="" id="id_password"> </div> 
+                </div>
+            <div >
+                <label for="id_password" class="control-label  requiredField">
+                    Password<span class="asteriskField">*</span> </label> 
+                    <div class="controls "> <input type="password" name="password" class="form-control" required="" id="id_password"> </div> 
+            </div>
+            <div >
+                <label for="id_password1" class="control-label  requiredField">
+                    Confirm Password<span class="asteriskField">*</span> </label> 
+                    <div class="controls "> <input type="password" name="newpassword" class="form-control" required="" id="id_password1"> </div> 
+            </div>
+        </fieldset>            
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Change Password</button>
+        </div>
+        <div class="div">
+            {{message}}
+        </div>
+    </form>
+    <a class="ml-2" href="http://127.0.0.1:8000/login">Logout</a>
+{% endblock content %}

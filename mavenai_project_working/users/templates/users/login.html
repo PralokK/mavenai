@@ -1,0 +1,28 @@
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Login Now</legend>
+                {{ form|crispy }}
+                <div >
+                    <label for="id_password" class="control-label  requiredField">
+                        Password<span class="asteriskField">*</span> </label> 
+                        <div class="controls "> <input type="password" name="password" class="form-control" required="" id="id_password"> </div> 
+                </div>
+            </fieldset>            
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Login</button>
+            </div>
+            <div class="div">
+                {{message}}
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Don't Have An Account? <a class="ml-2" href="http://127.0.0.1:8000/register">Register</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}
