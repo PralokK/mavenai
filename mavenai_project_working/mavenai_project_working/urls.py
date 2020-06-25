@@ -15,12 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from users import views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',views.login),
     path('',include('users.urls')),
-    path('accounts',include('allauth.urls'))
+    path('accounts/',include('allauth.urls')),
+    path('accounts/profile/',views.dashboard),
+    path('accounts/google/login/callback/dashboard/',views.dashboard)
     # path('s3direct/', include('s3direct.urls')),
 ]
 

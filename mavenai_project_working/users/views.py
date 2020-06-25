@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate , logout
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from .forms import SignUpForm, LoginForm
 from .models import RegisterUser
 import hashlib, random
@@ -25,9 +26,13 @@ def register(request):
             temp.user_mobile_no=form.cleaned_data.get('mobile_no')
             temp.user_passport_no=form.cleaned_data.get('passport_num')
             temp.user_age = form.cleaned_data.get('age')
+            password = ''.join(random.choices(string.ascii_uppercase +
+                             string.digits, k = 7))
+            user = User.objects.create_user(temp.user_name, temp.user_email, password)
             print(request.FILES['image'])
             if(form.cleaned_data['image']):
                 file_obj = request.FILES['image']
+                image_name = file_obj.name
                 file_directory_within_bucket = 'user_upload_files/{username}'.format(username=temp.user_name)
 
                 file_path_within_bucket = os.path.join(
@@ -40,8 +45,8 @@ def register(request):
                 if not media_storage.exists(file_path_within_bucket):
                     media_storage.save(file_path_within_bucket, file_obj)
                     file_url = media_storage.url(file_path_within_bucket)
-
-                    temp.user_image=request.FILES['image']
+                    temp.user_image=image_name
+                    
                 else:
                     return JsonResponse({
                         'message': 'Error: file {filename} already exists at {file_directory} in bucket {bucket_name}'.format(
@@ -52,10 +57,9 @@ def register(request):
                     }, status=400)
 
             temp.user_dob=request.POST['dob']
-            password = ''.join(random.choices(string.ascii_uppercase +
-                             string.digits, k = 7))
             print(password)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
             temp.user_password=hashlib.md5(password.encode()).hexdigest()
+            user.save()
             temp.save()
             # 'BN0GTUJ' 'V43DY7R'
             return render(request,'users/register.html',{'form':form,'password':'Your password will be '+password})
@@ -65,6 +69,10 @@ def register(request):
         args = {}
         args['form']=form
         return  render(request,'users/register.html',{'form':form})
+    args = {}
+    args['form']=form
+    return  render(request,'users/register.html',{'form':form})
+
 
 def login(request):
     if(request.POST):
@@ -99,6 +107,10 @@ def dashboard(request):
         if(password==newPassword):
             temp = RegisterUser.objects.get(user_password=hashlib.md5(oldPassword.encode()).hexdigest(),user_email=request.session['loginUser'])
             if(temp):
+                u = User.objects.get(password=oldPassword)
+                u.set_password('new password')
+                u.save()
+
                 temp.user_password=hashlib.md5(password.encode()).hexdigest()
                 temp.save()
                 logout(request)
@@ -106,11 +118,6 @@ def dashboard(request):
         else:
             return render(request,'users/dashboard.html',{'message':"passwords did not match"})
     else:
-        try:
-            print(request.session['loginUser'])
-            # logout(request)
-            return render(request,'users/dashboard.html',{'loginUser':request.session['loginUser']})
-        except Exception as identifier:
-            logout(request)
-            return redirect('login')
+        return render(request,'users/dashboard.html')
+       
             

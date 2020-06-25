@@ -29,8 +29,7 @@ ALLOWED_HOSTS = []
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-AWS_ACCESS_KEY_ID = 'AKIA2D6ALXOWFHETWQN2'
-AWS_SECRET_ACCESS_KEY = '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'
+
 AWS_STORAGE_BUCKET_NAME = 'mavenai'
 AWS_S3_REGION_NAME = 'us-east'
 AWS_S3_ENDPOINT_URL = 'https://s3.amazonaws.com'
@@ -58,11 +57,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'django.contrib.sites',
     'storages',
     'crispy_forms',
 ]
@@ -151,10 +151,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTHENTICATION_BACKENDS = {
+AUTHENTICATION_BACKENDS = [
+
+    # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
-    # 'django.account.auth.backends.AuthenticationBackend',
-    'django.contrib.auth.backends.ModelBackend',
-}
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 SITE_ID = 1
+
+LOGIN_REDIRECT_URL = 'dashboard/'
+
+
