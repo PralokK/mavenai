@@ -29,7 +29,6 @@ ALLOWED_HOSTS = []
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-
 AWS_STORAGE_BUCKET_NAME = 'mavenai'
 AWS_S3_REGION_NAME = 'us-east'
 AWS_S3_ENDPOINT_URL = 'https://s3.amazonaws.com'
