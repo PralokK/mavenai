@@ -33,7 +33,7 @@ class RegisterUser(models.Model):
     ])
     user_mobile_no = models.CharField(max_length=40,validators=[
         RegexValidator(
-            regex='^[0-9]$',
+            regex='^[0-9]+$',
             message='Mobile number must  conatain only numbers',
             code='invalid_mobileno'
         ),
