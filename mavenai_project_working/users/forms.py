@@ -14,7 +14,7 @@ class SignUpForm(forms.Form):
     ])
     mobile_no = forms.CharField(max_length=10,min_length=10,validators=[
         RegexValidator(
-            regex='^[0-9]$',
+            regex='^[0-9]+$',
             message='Mobile number must  conatain only numbers',
             code='invalid_mobileno'
         ),
